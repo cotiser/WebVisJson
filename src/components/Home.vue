@@ -4,7 +4,7 @@
     <el-header>
       <div>
         <img src="../assets/icons\svg\app.svg" style="width: 80%" alt />
-        <span style="white-space: nowrap">高校选课成绩管理系统</span>
+        <span style="white-space: nowrap">WebSeeJosn</span>
       </div>
       <el-button class="login_out" type="info" @click="logout">退出</el-button>
     </el-header>
