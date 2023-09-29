@@ -6,7 +6,6 @@
         <img src="../assets/icons\svg\app.svg" style="width: 80%" alt />
         <span style="white-space: nowrap">WebSeeJosn</span>
       </div>
-      <el-button class="login_out" type="info" @click="logout">退出</el-button>
     </el-header>
     <!-- 主体 -->
     <el-container>
@@ -93,15 +92,10 @@ export default {
   },
   created() {
     document.title = '主页面'
-    this.getMenuList()
-    this.activePath = window.sessionStorage.getItem('activePath')
+    // this.getMenuList()
+    // this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
-    logout() {
-      // 清空token
-      window.sessionStorage.clear()
-      this.$router.push('/login')
-    },
     // 获取请求菜单
     async getMenuList() {
       const { data: res } = await this.$http.get('menus')

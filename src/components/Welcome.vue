@@ -1,7 +1,21 @@
 <template>
   <div>
-    <!-- 2.为Echarts准备一个Dom -->
-    <el-row>
+    <el-card>
+      <el-row :gutter="20">
+        <el-col :span="30">
+          <el-button type="primary" @click="loadJsonFile"
+            >加载JSON文件</el-button
+          >
+          <el-divider direction="vertical"></el-divider>
+          <!-- v-if="jsonData" -->
+        </el-col>
+        <el-col :span="30">
+          <el-tag>JSON文件名称: {{ fileName }}</el-tag>
+        </el-col>
+      </el-row>
+    </el-card>
+
+    <el-row style="margin-top: 60px">
       <el-col :span="16">
         <div id="main" style="width: 1000px; height: 600px"></div>
       </el-col>
@@ -15,6 +29,40 @@
 import echarts from 'echarts'
 
 export default {
+  data() {
+    return {
+      fileName: null,
+      jsonData: null
+    }
+  },
+  methods: {
+    loadJsonFile() {
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = '.json'
+
+      input.addEventListener('change', (event) => {
+        const file = event.target.files[0]
+        this.fileName = file.name
+        if (file) {
+          const reader = new FileReader()
+
+          reader.onload = (e) => {
+            try {
+              const jsonContent = JSON.parse(e.target.result)
+              this.jsonData = JSON.stringify(jsonContent, null, 2)
+            } catch (error) {
+              console.error('JSON解析错误:', error)
+            }
+          }
+
+          reader.readAsText(file)
+        }
+      })
+
+      input.click()
+    }
+  },
   // 此时,页面上的元素,已经被渲染完毕了
   async mounted() {
     // 3.基于准备好的dom，初始化echarts实例
