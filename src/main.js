@@ -21,33 +21,33 @@ import TreeTable from 'vue-table-with-tree-grid'
 import NProgress from 'nprogress'
 // import 'nprogress/nprogress.css'
 
-import axios from 'axios'
+// import axios from 'axios'
 // 配置请求根路径
 // 本机地址
-axios.defaults.baseURL = 'http://127.0.0.1:9006/api/'
+// axios.defaults.baseURL = 'http://127.0.0.1:9006/api/'
 // axios.defaults.baseURL = 'http://192.168.195.164:9006/api/'
 
 // 在request 拦截器中, 展示进度条 NProgress.start()
 // 请求在到达服务器之前，先会调用use中的这个回调函数来添加请求头信息
-axios.interceptors.request.use((config) => {
-  NProgress.start()
-  // console.log(config)
-  // 为请求头对象，添加token验证的Authorization字段
-  config.headers.Authorization = window.sessionStorage.getItem('token')
-  // 在最后必须 return config
-  return config
-})
+// axios.interceptors.request.use((config) => {
+//   NProgress.start()
+//   // console.log(config)
+//   // 为请求头对象，添加token验证的Authorization字段
+//   config.headers.Authorization = window.sessionStorage.getItem('token')
+//   // 在最后必须 return config
+//   return config
+// })
 
 // response 拦截器中,  隐藏进度条NProgress.done()
-axios.interceptors.response.use((config) => {
-  NProgress.done()
-  return config
-})
+// axios.interceptors.response.use((config) => {
+//   NProgress.done()
+//   return config
+// })
 
 Vue.config.productionTip = false
 
 // 挂在到Vue实例，后面可通过this调用
-Vue.prototype.$http = axios
+// Vue.prototype.$http = axios
 
 // 组件全局注册 表格树
 Vue.component('tree-table', TreeTable)
