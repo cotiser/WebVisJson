@@ -14,8 +14,12 @@
         </el-col>
       </el-row>
     </el-card>
+    <!-- <el-row style="margin-top: 30px">
+      <span class="demonstration">演示速度</span>
+      <el-slider v-model="sliderValue"></el-slider>
+    </el-row> -->
 
-    <el-row>
+    <el-row style="margin-top: 30px">
       <el-col :span="56">
         <div id="main" style="width: 1000px; height: 700px"></div>
       </el-col>
@@ -34,6 +38,7 @@ export default {
       fileName: null,
       myChart: null,
       timer: null,
+      sliderValue: 50,
       // jsonData: null,
       scatterData: []
     }
@@ -53,14 +58,15 @@ export default {
           reader.onload = (e) => {
             try {
               this.scatterData = []
+              var tempMmwaveData = []
               const jsonContent = JSON.parse(e.target.result)
               // 遍历data
               jsonContent.data.forEach((item) => {
-                this.scatterData.push([
-                  item.mmwave_data[0].x,
-                  item.mmwave_data[0].y,
-                  item.mmwave_data[0].z
-                ])
+                tempMmwaveData = []
+                item.mmwave_data.forEach((item) => {
+                  tempMmwaveData.push([item.x, item.y, item.z])
+                })
+                this.scatterData.push(tempMmwaveData)
               })
               // setTimeout(() => {
               //   // 创建散点图并设置动画效果
@@ -88,13 +94,13 @@ export default {
         this.myChart.hideLoading()
       }
 
-      this.timer = setInterval(this.updataScatter3DChart, 100)
+      this.timer = setInterval(this.updataScatter3DChart, this.sliderValue)
     },
     updataScatter3DChart() {
       // while (this.scatterData.length != 0) {
       var data = []
       if (this.scatterData.length != 0) {
-        data = [this.scatterData.shift()]
+        data = this.scatterData.shift()
         // console.log(data)
       } else {
         clearInterval(this.timer)
