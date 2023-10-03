@@ -33,6 +33,7 @@ export default {
     return {
       fileName: null,
       myChart: null,
+      timer: null,
       // jsonData: null,
       scatterData: []
     }
@@ -69,7 +70,7 @@ export default {
             } catch (error) {
               console.error('JSON解析错误:', error)
             }
-            console.log(this.scatterData)
+            // console.log(this.scatterData)
             this.createScatter3DChart()
           }
           reader.readAsText(file)
@@ -87,35 +88,54 @@ export default {
         this.myChart.hideLoading()
       }
 
-      while (this.scatterData.length != 0) {
-        var option = {
-          tooltip: {},
-          xAxis3D: { name: 'X' },
-          yAxis3D: { name: 'Y' },
-          zAxis3D: { name: 'Z' },
-          grid3D: {},
-          series: [
-            {
-              type: 'scatter3D', // 使用散点图
-              data: this.scatterData.shift(),
-              symbolSize: 10, // 点的大小
-              animarion: true, // 启动动画效果
-              // animationDuration: 1000, // 动画的时长, 以毫秒为单位
-              // animationDuration: function (arg) {
-              //   console.log(arg)
-              //   return 2000 * arg // 不同值得到不同的动画时长
-              // },
-              animationEasing: 'bounceOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
-              // animationThreshold: 5, // 动画元素的阈值,
-              itemStyle: {
-                color: 'blue' // 点的颜色
-              }
-            }
-          ]
-        }
-        this.myChart.setOption(option)
+      this.timer = setInterval(this.updataScatter3DChart, 100)
+    },
+    updataScatter3DChart() {
+      // while (this.scatterData.length != 0) {
+      var data = []
+      if (this.scatterData.length != 0) {
+        data = [this.scatterData.shift()]
+        // console.log(data)
+      } else {
+        clearInterval(this.timer)
       }
+      // console.log(this.scatterData.length)
+      const min = -2
+      const max = 5
+      var option = {
+        tooltip: {},
+        // xAxis3D: { min: min, max: max, name: 'X' },
+        // yAxis3D: { min: min, max: max, name: 'Y' },
+        // zAxis3D: { min: min, max: max, name: 'Z' },
+        grid3D: {},
+        series: [
+          {
+            name: 'mmwave',
+            type: 'scatter3D', // 使用散点图
+            data: data,
+            symbolSize: 10, // 点的大小
+            animarion: true, // 启动动画效果
+            // animationDuration: 1000, // 动画的时长, 以毫秒为单位
+            // animationEasing: 'cubicInOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
+            // animationDelay: function (idx) {
+            //   console.log(idx)
+            //   return 500 * idx // 不同值得到不同的动画时长
+            // },
+            // animationDelay: 1000,
+            // animationThreshold: 5, // 动画元素的阈值,
+            itemStyle: {
+              color: 'blue' // 点的颜色
+            }
+          }
+        ]
+        // animationEasing: 'bounceOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
+        // animationDelayUpdate: function (idx) {
+        //   return idx * 500
+        // }
+      }
+      this.myChart.setOption(option)
     }
+    // }
   },
   // 此时,页面上的元素,已经被渲染完毕了
   async mounted() {
@@ -125,27 +145,17 @@ export default {
 
     this.myChart.showLoading()
 
-    // while (this.scatterData.length == 0) {
-    //   this.sleep(1000)
-    // }
-    // myChart.hideLoading()
-    // 准备数据项和配置项
-    // const data = [
-    //   [6.5423455238342285, 0.8681341409683228, 2.162891149520874],
-    //   [3.5882620811462402, 1.1126402616500854, 1.23966646194458],
-    //   [3.5893783569335938, 1.1002776622772217, 1.1001211404800415]
-    //   // 添加更多数据点...
-    // ]
     // 指定图表的配置项和数据
 
-    // await new Promise((resolve) => setTimeout(resolve, 1000)) // 异步等待 3 秒
-    // console.log(this.scatterData)
+    const min = -2
+    const max = 5
     var option = {
       tooltip: {},
-      xAxis3D: { name: 'X' },
-      yAxis3D: { name: 'Y' },
-      zAxis3D: { name: 'Z' },
+      xAxis3D: { min: min, max: max, name: 'X' },
+      yAxis3D: { min: min, max: max, name: 'Y' },
+      zAxis3D: { min: min, max: max, name: 'Z' },
       grid3D: {},
+
       series: [
         {
           type: 'scatter3D', // 使用散点图
@@ -158,31 +168,9 @@ export default {
         }
       ]
     }
+
     // 展示数据
     this.myChart.setOption(option)
-
-    // 鼠标事件处理
-    // myChart.on('updateAxisPointer', function (event) {
-    //   var xAxisInfo = event.axesInfo[0]
-    //   if (xAxisInfo) {
-    //     var dimension = xAxisInfo.value + 1
-    //     myChart.setOption({
-    //       series: {
-    //         id: 'pie',
-    //         label: {
-    //           formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-    //         },
-    //         encode: {
-    //           value: dimension,
-    //           tooltip: dimension
-    //         }
-    //       }
-    //     })
-    //   }
-    // })
-
-    // 数据合并
-    //  const result = _.merge(res.data, this.options)
   }
 }
 </script>
