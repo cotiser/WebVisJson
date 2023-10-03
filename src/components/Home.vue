@@ -4,7 +4,7 @@
     <el-header>
       <div>
         <img src="../assets/icons\svg\app.svg" style="width: 80%" alt />
-        <span style="white-space: nowrap">WebSeeJosn</span>
+        <span style="white-space: nowrap">WebVisJosn</span>
       </div>
     </el-header>
     <!-- 主体 -->
