@@ -40,7 +40,8 @@ export default {
       timer: null,
       sliderValue: 50,
       // jsonData: null,
-      scatterData: []
+      mmwaveScatterData: [],
+      kinectScatterData: []
     }
   },
   methods: {
@@ -57,16 +58,53 @@ export default {
 
           reader.onload = (e) => {
             try {
-              this.scatterData = []
+              this.mmwaveScatterData = []
+              this.kinectScatterData = []
               var tempMmwaveData = []
+              var tempKinectData = []
               const jsonContent = JSON.parse(e.target.result)
               // 遍历data
               jsonContent.data.forEach((item) => {
+                // mmwave
                 tempMmwaveData = []
                 item.mmwave_data.forEach((item) => {
                   tempMmwaveData.push([item.x, item.y, item.z])
                 })
-                this.scatterData.push(tempMmwaveData)
+                this.mmwaveScatterData.push(tempMmwaveData)
+
+                // kinect
+                tempKinectData = []
+                tempKinectData.push([
+                  item.kinect_data.torso.x,
+                  item.kinect_data.torso.y,
+                  item.kinect_data.torso.z
+                ])
+                tempKinectData.push([
+                  item.kinect_data.left_hip.x,
+                  item.kinect_data.left_hip.y,
+                  item.kinect_data.left_hip.z
+                ])
+                tempKinectData.push([
+                  item.kinect_data.right_hip.x,
+                  item.kinect_data.right_hip.y,
+                  item.kinect_data.right_hip.z
+                ])
+                tempKinectData.push([
+                  item.kinect_data.left_shoulder.x,
+                  item.kinect_data.left_shoulder.y,
+                  item.kinect_data.left_shoulder.z
+                ])
+                tempKinectData.push([
+                  item.kinect_data.right_shoulder.x,
+                  item.kinect_data.right_shoulder.y,
+                  item.kinect_data.right_shoulder.z
+                ])
+                tempKinectData.push([
+                  item.kinect_data.neck.x,
+                  item.kinect_data.neck.y,
+                  item.kinect_data.neck.z
+                ])
+                this.kinectScatterData.push(tempKinectData)
               })
               // setTimeout(() => {
               //   // 创建散点图并设置动画效果
@@ -76,7 +114,7 @@ export default {
             } catch (error) {
               console.error('JSON解析错误:', error)
             }
-            // console.log(this.scatterData)
+            // console.log(this.mmwaveScatterData)
             this.createScatter3DChart()
           }
           reader.readAsText(file)
@@ -90,22 +128,24 @@ export default {
       while (new Date().getTime() <= timeOut) {}
     },
     createScatter3DChart() {
-      if (this.scatterData.length != 0) {
+      if (this.mmwaveScatterData.length != 0) {
         this.myChart.hideLoading()
       }
 
       this.timer = setInterval(this.updataScatter3DChart, this.sliderValue)
     },
     updataScatter3DChart() {
-      // while (this.scatterData.length != 0) {
-      var data = []
-      if (this.scatterData.length != 0) {
-        data = this.scatterData.shift()
+      // while (this.mmwaveScatterData.length != 0) {
+      var mmwaveData = []
+      var kinectData = []
+      if (this.mmwaveScatterData.length != 0) {
+        mmwaveData = this.mmwaveScatterData.shift()
+        kinectData = this.kinectScatterData.shift()
         // console.log(data)
       } else {
         clearInterval(this.timer)
       }
-      // console.log(this.scatterData.length)
+      // console.log(this.mmwaveScatterData.length)
       const min = -2
       const max = 5
       var option = {
@@ -114,13 +154,16 @@ export default {
         // yAxis3D: { min: min, max: max, name: 'Y' },
         // zAxis3D: { min: min, max: max, name: 'Z' },
         grid3D: {},
+        legend: {
+          data: ['mmwave', 'kinect2']
+        },
         series: [
           {
             name: 'mmwave',
             type: 'scatter3D', // 使用散点图
-            data: data,
+            data: mmwaveData,
             symbolSize: 10, // 点的大小
-            animarion: true, // 启动动画效果
+            animarion: true // 启动动画效果
             // animationDuration: 1000, // 动画的时长, 以毫秒为单位
             // animationEasing: 'cubicInOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
             // animationDelay: function (idx) {
@@ -129,15 +172,15 @@ export default {
             // },
             // animationDelay: 1000,
             // animationThreshold: 5, // 动画元素的阈值,
-            itemStyle: {
-              color: 'blue' // 点的颜色
-            }
+          },
+          {
+            name: 'kinect2',
+            type: 'scatter3D', // 使用散点图
+            data: kinectData,
+            symbolSize: 10, // 点的大小
+            animarion: true // 启动动画效果
           }
         ]
-        // animationEasing: 'bounceOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
-        // animationDelayUpdate: function (idx) {
-        //   return idx * 500
-        // }
       }
       this.myChart.setOption(option)
     }
@@ -161,15 +204,28 @@ export default {
       yAxis3D: { min: min, max: max, name: 'Y' },
       zAxis3D: { min: min, max: max, name: 'Z' },
       grid3D: {},
-
+      legend: {
+        data: ['mmwave', 'kinect2']
+      },
       series: [
         {
+          name: 'mmwave',
           type: 'scatter3D', // 使用散点图
-          data: this.scatterData,
+          data: this.mmwaveScatterData,
           symbolSize: 10, // 点的大小
           animarion: true, // 启动动画效果
           itemStyle: {
             color: 'blue' // 点的颜色
+          }
+        },
+        {
+          name: 'kinect2',
+          type: 'scatter3D', // 使用散点图
+          data: this.kinectScatterData,
+          symbolSize: 10, // 点的大小
+          animarion: true, // 启动动画效果
+          itemStyle: {
+            color: 'red' // 点的颜色
           }
         }
       ]
