@@ -40,7 +40,7 @@ npm run deploy
 
 ## 在线网站
 
-网站网址为<https://cotiser.github.io/WebVisJson/#/home>
+网站网址为<https://cotiser.github.io/WebVisJson/>
 
 ## 关于作者
 
