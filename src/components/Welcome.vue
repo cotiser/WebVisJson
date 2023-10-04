@@ -1,16 +1,25 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-card>
-      <el-row :gutter="20">
+      <el-row class="head-row" :gutter="20">
         <el-col :span="30">
-          <el-button type="primary" @click="loadJsonFile"
-            >加载JSON文件</el-button
-          >
-          <el-divider direction="vertical"></el-divider>
+          <el-button type="primary" @click="loadJsonFile">加载JSON文件</el-button>
           <!-- v-if="jsonData" -->
         </el-col>
+        <el-divider direction="vertical"></el-divider>
         <el-col :span="30">
           <el-tag>JSON文件名称: {{ fileName }}</el-tag>
+        </el-col>
+        <el-divider direction="vertical"></el-divider>
+        <el-col :span="30">
+          <el-checkbox v-model="autoRotate">autoRotate</el-checkbox>
+        </el-col>
+        <el-divider direction="vertical"></el-divider>
+        <el-col :span="30" class="time-interval-slider-col">
+          <el-tooltip class="item" effect="dark" content="~1000 可按住左键拖移视角" placement="top-start">
+            <div class="time-interval-slider-col-label">timeInterval</div>
+          </el-tooltip>
+          <el-slider v-model="sliderValue" :min="50" :max="2000" show-input></el-slider>
         </el-col>
       </el-row>
     </el-card>
@@ -38,7 +47,8 @@ export default {
       fileName: null,
       myChart: null,
       timer: null,
-      sliderValue: 50,
+      sliderValue: 100,
+      autoRotate: false,
       mmwaveScatterData: [],
       kinectScatterData: []
     }
@@ -116,12 +126,15 @@ export default {
 
       input.click()
     },
+    resetInterval(ms) {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.updataScatter3DChart, ms);
+    },
     createScatter3DChart() {
       if (this.mmwaveScatterData.length != 0) {
         this.myChart.hideLoading()
       }
-
-      this.timer = setInterval(this.updataScatter3DChart, this.sliderValue)
+      this.resetInterval(this.sliderValue);
     },
     updataScatter3DChart() {
       var mmwaveData = []
@@ -136,7 +149,11 @@ export default {
       const max = 5
       var option = {
         tooltip: {},
-        grid3D: {},
+        grid3D: {
+          viewControl: {
+            autoRotate: this.autoRotate, // 在没有用户交互时自动旋转视图
+          }
+        },
         legend: {
           data: ['mmwave', 'kinect2']
         },
@@ -184,7 +201,11 @@ export default {
       xAxis3D: { min: min, max: max, name: 'X' },
       yAxis3D: { min: min, max: max, name: 'Y' },
       zAxis3D: { min: min, max: max, name: 'Z' },
-      grid3D: {},
+      grid3D: {
+        viewControl: {
+          autoRotate: this.autoRotate, // 在没有用户交互时自动旋转视图
+        }
+      },
       legend: {
         data: ['mmwave', 'kinect2']
       },
@@ -217,13 +238,38 @@ export default {
   },
   async beforeDestroy() {
     this.myChart.dispose()
+  },
+  watch: {
+    sliderValue(val) {
+      this.resetInterval(val);
+    }
   }
 }
 </script>
 
-<style>
-div {
-  margin: 0;
-  padding: 0;
+<style lang="scss" scoped>
+.head-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.time-interval-slider-col {
+  display: flex;
+  width: 400px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+
+  .time-interval-slider-col-label {
+    font-size: 14px;
+  }
+
+  .el-slider {
+    width: 400px;
+  }
+
+  width: 400px;
 }
 </style>

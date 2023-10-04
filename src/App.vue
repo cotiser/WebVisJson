@@ -10,3 +10,9 @@ export default {
   name: 'app'
 }
 </script>
+
+<style>
+body {
+  overflow-x: clip;
+}
+</style>

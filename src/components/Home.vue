@@ -10,40 +10,23 @@
     <!-- 主体 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside :width="isCollapse ? '64px' : '200px'">
+      <el-aside :width="isCollapse ? '64px' : '200px'" v-show=false>
         <div class="toggle-button" @click="togleCollapse">|||</div>
-        <el-menu
-          style="object-fit: contain"
-          unique-opened
-          :collapse="isCollapse"
-          :collapse-transition="false"
-          router
-          :default-active="activePath"
-          background-color="#1d3743"
-          text-color="#fff"
-          active-text-color="#409FFF"
-        >
+        <el-menu style="object-fit: contain" unique-opened :collapse="isCollapse" :collapse-transition="false" router
+          :default-active="activePath" background-color="#1d3743" text-color="#fff" active-text-color="#409FFF">
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
           <!-- 一级菜单  -->
-          <el-submenu
-            :index="item.id + ''"
-            v-for="item in menuList"
-            :key="item.id"
-          >
+          <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <i :class="iconObj[item.id]"></i>
               <span>{{ item.authName }}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item
-              :index="'/' + subItem.path"
-              v-for="subItem in item.children"
-              :key="subItem.id"
-              @click="saveNavState('/' + subItem.path)"
-            >
+            <el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)">
               <!-- 导航开启路由模式：
                 将index值作为导航路由 -->
               <!-- 二级菜单的模板区域 -->
@@ -56,13 +39,8 @@
         </el-menu>
       </el-aside>
       <!-- 内容主体 -->
-      <el-main
-        class="back_main"
-        :style="'background-image:url(' + Background + ');'"
-      >
-        <router-view
-          :style="'background: rgba(255, 255, 255, 0.85); padding: 20px; vertical-align: middle;'"
-        >
+      <el-main class="back_main" :style="'background-image:url(' + Background + ');'">
+        <router-view :style="'background: rgba(255, 255, 255, 0.85); padding: 20px; vertical-align: middle;'">
         </router-view>
       </el-main>
     </el-container>
@@ -119,6 +97,7 @@ export default {
 .el-container {
   height: 100%;
 }
+
 .el-header {
   background-color: #106358;
   display: flex;
@@ -127,17 +106,21 @@ export default {
   align-items: center;
   color: #fff;
   font-size: 20px;
-  > div {
+
+  >div {
     display: flex;
     align-items: center;
+
     img {
       height: 40px;
     }
+
     span {
       margin-left: 30px;
     }
   }
 }
+
 .el-aside {
   background-color: #1d3743;
 
@@ -145,13 +128,16 @@ export default {
     border: none;
   }
 }
+
 .el-main {
   padding: 0px;
   background-color: #eaedf1;
 }
+
 .iconfont {
   margin-right: 10px;
 }
+
 .toggle-button {
   background-color: #33505c;
   font-size: 10px;
@@ -162,6 +148,7 @@ export default {
   // 鼠标放上去变成小手
   cursor: pointer;
 }
+
 .login_out {
   background-color: #044137;
 }
