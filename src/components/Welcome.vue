@@ -42,7 +42,7 @@ import * as echarts from 'echarts'
 import 'echarts-gl'
 
 export default {
-  data() {
+  data () {
     return {
       fileName: null,
       myChart: null,
@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    loadJsonFile() {
+    loadJsonFile () {
       const input = document.createElement('input')
       input.type = 'file'
       input.accept = '.json'
@@ -69,8 +69,8 @@ export default {
             try {
               this.mmwaveScatterData = []
               this.kinectScatterData = []
-              var tempMmwaveData = []
-              var tempKinectData = []
+              let tempMmwaveData = []
+              let tempKinectData = []
               const jsonContent = JSON.parse(e.target.result)
               // 遍历data
               jsonContent.data.forEach((item) => {
@@ -126,19 +126,19 @@ export default {
 
       input.click()
     },
-    resetInterval(ms) {
-      clearInterval(this.timer);
-      this.timer = setInterval(this.updataScatter3DChart, ms);
+    resetInterval (ms) {
+      clearInterval(this.timer)
+      this.timer = setInterval(this.updataScatter3DChart, ms)
     },
-    createScatter3DChart() {
+    createScatter3DChart () {
       if (this.mmwaveScatterData.length != 0) {
         this.myChart.hideLoading()
       }
-      this.resetInterval(this.sliderValue);
+      this.resetInterval(this.sliderValue)
     },
-    updataScatter3DChart() {
-      var mmwaveData = []
-      var kinectData = []
+    updataScatter3DChart () {
+      let mmwaveData = []
+      let kinectData = []
       if (this.mmwaveScatterData.length != 0) {
         mmwaveData = this.mmwaveScatterData.shift()
         kinectData = this.kinectScatterData.shift()
@@ -147,11 +147,11 @@ export default {
       }
       const min = -2
       const max = 5
-      var option = {
+      const option = {
         tooltip: {},
         grid3D: {
           viewControl: {
-            autoRotate: this.autoRotate, // 在没有用户交互时自动旋转视图
+            autoRotate: this.autoRotate // 在没有用户交互时自动旋转视图
           }
         },
         legend: {
@@ -186,24 +186,24 @@ export default {
     }
   },
   // 此时,页面上的元素,已经被渲染完毕了
-  async mounted() {
+  async mounted () {
     // 初始化echarts实例
     this.myChart = echarts.init(document.getElementById('main'))
 
-    //this.myChart.showLoading()
+    // this.myChart.showLoading()
 
     // 指定图表的配置项和数据
 
     const min = -2
     const max = 5
-    var option = {
+    const option = {
       tooltip: {},
       xAxis3D: { min: min, max: max, name: 'X' },
       yAxis3D: { min: min, max: max, name: 'Y' },
       zAxis3D: { min: min, max: max, name: 'Z' },
       grid3D: {
         viewControl: {
-          autoRotate: this.autoRotate, // 在没有用户交互时自动旋转视图
+          autoRotate: this.autoRotate // 在没有用户交互时自动旋转视图
         }
       },
       legend: {
@@ -236,12 +236,12 @@ export default {
     // 展示数据
     this.myChart.setOption(option)
   },
-  async beforeDestroy() {
+  async beforeDestroy () {
     this.myChart.dispose()
   },
   watch: {
-    sliderValue(val) {
-      this.resetInterval(val);
+    sliderValue (val) {
+      this.resetInterval(val)
     }
   }
 }

@@ -50,7 +50,7 @@
 <script>
 import Background from '@/assets/images/scut.jpg'
 export default {
-  data() {
+  data () {
     return {
       Background: Background,
       // 左侧菜单数据
@@ -68,25 +68,25 @@ export default {
       activePath: ''
     }
   },
-  created() {
+  created () {
     document.title = '主页面'
     // this.getMenuList()
     // this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     // 获取请求菜单
-    async getMenuList() {
+    async getMenuList () {
       const { data: res } = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menuList = res.data
       console.log(res)
     },
     // 菜单的折叠与展开
-    togleCollapse() {
+    togleCollapse () {
       this.isCollapse = !this.isCollapse
     },
     // 保存连接的激活地址
-    saveNavState(activePath) {
+    saveNavState (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
     }
   }
