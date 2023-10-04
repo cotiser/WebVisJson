@@ -3,7 +3,9 @@
     <el-card>
       <el-row :gutter="20">
         <el-col :span="30">
-          <el-button type="primary" @click="loadJsonFile">加载JSON文件</el-button>
+          <el-button type="primary" @click="loadJsonFile"
+            >加载JSON文件</el-button
+          >
           <el-divider direction="vertical"></el-divider>
           <!-- v-if="jsonData" -->
         </el-col>
@@ -37,7 +39,6 @@ export default {
       myChart: null,
       timer: null,
       sliderValue: 50,
-      // jsonData: null,
       mmwaveScatterData: [],
       kinectScatterData: []
     }
@@ -104,15 +105,9 @@ export default {
                 ])
                 this.kinectScatterData.push(tempKinectData)
               })
-              // setTimeout(() => {
-              //   // 创建散点图并设置动画效果
-              //   this.createScatter3DChart()
-              // }, 1000) // 模拟加载延迟
-              // this.jsonData = JSON.stringify(jsonContent, null, 2)
             } catch (error) {
               console.error('JSON解析错误:', error)
             }
-            // console.log(this.mmwaveScatterData)
             this.createScatter3DChart()
           }
           reader.readAsText(file)
@@ -120,10 +115,6 @@ export default {
       })
 
       input.click()
-    },
-    sleep(time) {
-      var timeOut = new Date().getTime() + parseInt(time, 10)
-      while (new Date().getTime() <= timeOut) { }
     },
     createScatter3DChart() {
       if (this.mmwaveScatterData.length != 0) {
@@ -133,24 +124,18 @@ export default {
       this.timer = setInterval(this.updataScatter3DChart, this.sliderValue)
     },
     updataScatter3DChart() {
-      // while (this.mmwaveScatterData.length != 0) {
       var mmwaveData = []
       var kinectData = []
       if (this.mmwaveScatterData.length != 0) {
         mmwaveData = this.mmwaveScatterData.shift()
         kinectData = this.kinectScatterData.shift()
-        // console.log(data)
       } else {
         clearInterval(this.timer)
       }
-      // console.log(this.mmwaveScatterData.length)
       const min = -2
       const max = 5
       var option = {
         tooltip: {},
-        // xAxis3D: { min: min, max: max, name: 'X' },
-        // yAxis3D: { min: min, max: max, name: 'Y' },
-        // zAxis3D: { min: min, max: max, name: 'Z' },
         grid3D: {},
         legend: {
           data: ['mmwave', 'kinect2']
@@ -182,11 +167,9 @@ export default {
       }
       this.myChart.setOption(option)
     }
-    // }
   },
   // 此时,页面上的元素,已经被渲染完毕了
   async mounted() {
-    //createScatter3DChart() {
     // 初始化echarts实例
     this.myChart = echarts.init(document.getElementById('main'))
 
@@ -233,7 +216,7 @@ export default {
     this.myChart.setOption(option)
   },
   async beforeDestroy() {
-    this.myChart.dispose();
+    this.myChart.dispose()
   }
 }
 </script>
