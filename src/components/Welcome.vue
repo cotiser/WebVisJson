@@ -3,9 +3,7 @@
     <el-card>
       <el-row :gutter="20">
         <el-col :span="30">
-          <el-button type="primary" @click="loadJsonFile"
-            >加载JSON文件</el-button
-          >
+          <el-button type="primary" @click="loadJsonFile">加载JSON文件</el-button>
           <el-divider direction="vertical"></el-divider>
           <!-- v-if="jsonData" -->
         </el-col>
@@ -125,7 +123,7 @@ export default {
     },
     sleep(time) {
       var timeOut = new Date().getTime() + parseInt(time, 10)
-      while (new Date().getTime() <= timeOut) {}
+      while (new Date().getTime() <= timeOut) { }
     },
     createScatter3DChart() {
       if (this.mmwaveScatterData.length != 0) {
@@ -163,7 +161,7 @@ export default {
             type: 'scatter3D', // 使用散点图
             data: mmwaveData,
             symbolSize: 10, // 点的大小
-            animarion: true // 启动动画效果
+            animation: true // 启动动画效果
             // animationDuration: 1000, // 动画的时长, 以毫秒为单位
             // animationEasing: 'cubicInOut', // 缓动动画，linear:线性变化  bounceOut: 线性变化
             // animationDelay: function (idx) {
@@ -192,7 +190,7 @@ export default {
     // 初始化echarts实例
     this.myChart = echarts.init(document.getElementById('main'))
 
-    this.myChart.showLoading()
+    //this.myChart.showLoading()
 
     // 指定图表的配置项和数据
 
@@ -213,7 +211,7 @@ export default {
           type: 'scatter3D', // 使用散点图
           data: this.mmwaveScatterData,
           symbolSize: 10, // 点的大小
-          animarion: true, // 启动动画效果
+          animation: true, // 启动动画效果
           itemStyle: {
             color: 'blue' // 点的颜色
           }
@@ -223,7 +221,7 @@ export default {
           type: 'scatter3D', // 使用散点图
           data: this.kinectScatterData,
           symbolSize: 10, // 点的大小
-          animarion: true, // 启动动画效果
+          animation: true, // 启动动画效果
           itemStyle: {
             color: 'red' // 点的颜色
           }
@@ -233,6 +231,9 @@ export default {
 
     // 展示数据
     this.myChart.setOption(option)
+  },
+  async beforeDestroy() {
+    this.myChart.dispose();
   }
 }
 </script>

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
@@ -14,7 +14,7 @@
     "echarts": "^5.4.3",
     "echarts-gl": "^2.0.9",
     "element-ui": "^2.4.5",
-    "node-sass": "^4.14.1",
+    "sass": "^1.62.1",
     "nprogress": "^0.2.0",
     "push-dir": "^0.4.1",
     "sass-loader": "^7.3.1",

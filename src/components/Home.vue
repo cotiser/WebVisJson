@@ -3,7 +3,7 @@
     <!-- 头部 -->
     <el-header>
       <div>
-        <img src="../assets/icons\svg\app.svg" style="width: 80%" alt />
+        <img src="../assets/icons/svg/app.svg" style="width: 80%" alt />
         <span style="white-space: nowrap">WebVisJson</span>
       </div>
     </el-header>

@@ -11,13 +11,13 @@ Vue
 ## Project setup
 
 ```
-npm install
+npm install --registry=https://registry.npmmirror.com
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
@@ -46,6 +46,10 @@ npm run deploy
 
 keeser
 
+## Contributors
+
+sweetbrulee
+
 ## TODO
 
-- [ ] 将 json 显示在网页三维中
+- [x] 将 json 显示在网页三维中
