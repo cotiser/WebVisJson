@@ -3,7 +3,9 @@
     <el-card>
       <el-row class="head-row" :gutter="20">
         <el-col :span="30">
-          <el-button type="primary" @click="loadJsonFile">加载JSON文件</el-button>
+          <el-button type="primary" @click="loadJsonFile"
+            >加载JSON文件</el-button
+          >
           <!-- v-if="jsonData" -->
         </el-col>
         <el-divider direction="vertical"></el-divider>
@@ -16,10 +18,30 @@
         </el-col>
         <el-divider direction="vertical"></el-divider>
         <el-col :span="30" class="time-interval-slider-col">
-          <el-tooltip class="item" effect="dark" content="~1000 可按住左键拖移视角" placement="top-start">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="~1000 可按住左键拖移视角"
+            placement="top-start"
+          >
             <div class="time-interval-slider-col-label">timeInterval</div>
           </el-tooltip>
-          <el-slider v-model="sliderValue" :min="50" :max="2000" show-input></el-slider>
+          <el-slider
+            v-model="sliderValue"
+            :min="50"
+            :max="2000"
+            show-input
+          ></el-slider>
+        </el-col>
+        <el-divider direction="vertical"></el-divider>
+        <el-col :span="30">
+          <el-button
+            size="small"
+            :type="stopStatus ? 'primary' : 'danger'"
+            @click="handleStop"
+          >
+            {{ stopStatus ? '开始' : '停止' }}
+          </el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -42,19 +64,20 @@ import * as echarts from 'echarts'
 import 'echarts-gl'
 
 export default {
-  data () {
+  data() {
     return {
       fileName: null,
       myChart: null,
       timer: null,
       sliderValue: 100,
       autoRotate: false,
+      stopStatus: true,
       mmwaveScatterData: [],
       kinectScatterData: []
     }
   },
   methods: {
-    loadJsonFile () {
+    loadJsonFile() {
       const input = document.createElement('input')
       input.type = 'file'
       input.accept = '.json'
@@ -118,6 +141,7 @@ export default {
             } catch (error) {
               console.error('JSON解析错误:', error)
             }
+            this.stopStatus = false
             this.createScatter3DChart()
           }
           reader.readAsText(file)
@@ -126,17 +150,17 @@ export default {
 
       input.click()
     },
-    resetInterval (ms) {
+    resetInterval(ms) {
       clearInterval(this.timer)
       this.timer = setInterval(this.updataScatter3DChart, ms)
     },
-    createScatter3DChart () {
+    createScatter3DChart() {
       if (this.mmwaveScatterData.length != 0) {
         this.myChart.hideLoading()
       }
       this.resetInterval(this.sliderValue)
     },
-    updataScatter3DChart () {
+    updataScatter3DChart() {
       let mmwaveData = []
       let kinectData = []
       if (this.mmwaveScatterData.length != 0) {
@@ -183,10 +207,13 @@ export default {
         ]
       }
       this.myChart.setOption(option)
+    },
+    handleStop() {
+      this.stopStatus = !this.stopStatus
     }
   },
   // 此时,页面上的元素,已经被渲染完毕了
-  async mounted () {
+  async mounted() {
     // 初始化echarts实例
     this.myChart = echarts.init(document.getElementById('main'))
 
@@ -236,12 +263,21 @@ export default {
     // 展示数据
     this.myChart.setOption(option)
   },
-  async beforeDestroy () {
+  async beforeDestroy() {
     this.myChart.dispose()
   },
   watch: {
-    sliderValue (val) {
+    sliderValue(val) {
       this.resetInterval(val)
+    },
+    stopStatus(sta) {
+      if (sta) {
+        // 停止
+        clearInterval(this.timer)
+      } else {
+        // 开始
+        this.resetInterval(this.sliderValue)
+      }
     }
   }
 }
