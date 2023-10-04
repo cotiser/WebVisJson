@@ -268,7 +268,9 @@ export default {
   },
   watch: {
     sliderValue(val) {
-      this.resetInterval(val)
+      if (!this.stopStatus) {
+        this.resetInterval(val)
+      }
     },
     stopStatus(sta) {
       if (sta) {
