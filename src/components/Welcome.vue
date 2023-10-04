@@ -3,9 +3,7 @@
     <el-card>
       <el-row class="head-row" :gutter="20">
         <el-col :span="30">
-          <el-button type="primary" @click="loadJsonFile"
-            >加载JSON文件</el-button
-          >
+          <el-button type="primary" @click="loadJsonFile">加载JSON文件</el-button>
           <!-- v-if="jsonData" -->
         </el-col>
         <el-divider direction="vertical"></el-divider>
@@ -18,28 +16,14 @@
         </el-col>
         <el-divider direction="vertical"></el-divider>
         <el-col :span="30" class="time-interval-slider-col">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="~1000 可按住左键拖移视角"
-            placement="top-start"
-          >
+          <el-tooltip class="item" effect="dark" content="~1000 可按住左键拖移视角" placement="top-start">
             <div class="time-interval-slider-col-label">timeInterval</div>
           </el-tooltip>
-          <el-slider
-            v-model="sliderValue"
-            :min="50"
-            :max="2000"
-            show-input
-          ></el-slider>
+          <el-slider v-model="sliderValue" :min="50" :max="2000" show-input></el-slider>
         </el-col>
         <el-divider direction="vertical"></el-divider>
         <el-col :span="30">
-          <el-button
-            size="small"
-            :type="stopStatus ? 'primary' : 'danger'"
-            @click="handleStop"
-          >
+          <el-button size="small" :type="stopStatus ? 'primary' : 'danger'" @click="handleStop">
             {{ stopStatus ? '开始' : '停止' }}
           </el-button>
         </el-col>
@@ -69,7 +53,7 @@ export default {
       fileName: null,
       myChart: null,
       timer: null,
-      sliderValue: 100,
+      sliderValue: 50,
       autoRotate: false,
       stopStatus: true,
       mmwaveScatterData: [],
