@@ -42,13 +42,13 @@ npm run deploy
 
 网站网址为<https://cotiser.github.io/WebVisJson/>
 
-## 关于作者
+## Json 数据样例
 
-keeser
+网站网址为<https://github.com/cotiser/record_and_preprocess/tree/master/to_json>
 
 ## Contributors
 
-sweetbrulee
+keeser, sweetbrulee
 
 ## TODO
 
