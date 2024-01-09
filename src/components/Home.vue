@@ -4,29 +4,46 @@
     <el-header>
       <div>
         <img src="../assets/icons/svg/app.svg" style="width: 80%" alt />
-        <span style="white-space: nowrap">WebVisJson</span>
+        <span style="white-space: nowrap">助老系统数据采集软件 HESCD</span>
       </div>
     </el-header>
     <!-- 主体 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside :width="isCollapse ? '64px' : '200px'" v-show=false>
+      <el-aside :width="isCollapse ? '64px' : '200px'" v-show="false">
         <div class="toggle-button" @click="togleCollapse">|||</div>
-        <el-menu style="object-fit: contain" unique-opened :collapse="isCollapse" :collapse-transition="false" router
-          :default-active="activePath" background-color="#1d3743" text-color="#fff" active-text-color="#409FFF">
+        <el-menu
+          style="object-fit: contain"
+          unique-opened
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          router
+          :default-active="activePath"
+          background-color="#1d3743"
+          text-color="#fff"
+          active-text-color="#409FFF"
+        >
           <!-- :unique-opened="true"->只允许展开一个菜单 -->
           <!-- :collapse-transition="false" -> 关闭动画 -->
           <!-- router -> 导航开启路由模式 -->
           <!-- 一级菜单  -->
-          <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
+          <el-submenu
+            :index="item.id + ''"
+            v-for="item in menuList"
+            :key="item.id"
+          >
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <i :class="iconObj[item.id]"></i>
               <span>{{ item.authName }}</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item :index="'/' + subItem.path" v-for="subItem in item.children" :key="subItem.id"
-              @click="saveNavState('/' + subItem.path)">
+            <el-menu-item
+              :index="'/' + subItem.path"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)"
+            >
               <!-- 导航开启路由模式：
                 将index值作为导航路由 -->
               <!-- 二级菜单的模板区域 -->
@@ -39,8 +56,13 @@
         </el-menu>
       </el-aside>
       <!-- 内容主体 -->
-      <el-main class="back_main" :style="'background-image:url(' + Background + ');'">
-        <router-view :style="'background: rgba(255, 255, 255, 0.85); padding: 20px; vertical-align: middle;'">
+      <el-main
+        class="back_main"
+        :style="'background-image:url(' + Background + ');'"
+      >
+        <router-view
+          :style="'background: rgba(255, 255, 255, 0.85); padding: 20px; vertical-align: middle;'"
+        >
         </router-view>
       </el-main>
     </el-container>
@@ -50,7 +72,7 @@
 <script>
 import Background from '@/assets/images/scut.jpg'
 export default {
-  data () {
+  data() {
     return {
       Background: Background,
       // 左侧菜单数据
@@ -68,25 +90,25 @@ export default {
       activePath: ''
     }
   },
-  created () {
+  created() {
     document.title = '主页面'
     // this.getMenuList()
     // this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
     // 获取请求菜单
-    async getMenuList () {
+    async getMenuList() {
       const { data: res } = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menuList = res.data
       console.log(res)
     },
     // 菜单的折叠与展开
-    togleCollapse () {
+    togleCollapse() {
       this.isCollapse = !this.isCollapse
     },
     // 保存连接的激活地址
-    saveNavState (activePath) {
+    saveNavState(activePath) {
       window.sessionStorage.setItem('activePath', activePath)
     }
   }
@@ -107,7 +129,7 @@ export default {
   color: #fff;
   font-size: 20px;
 
-  >div {
+  > div {
     display: flex;
     align-items: center;
 
